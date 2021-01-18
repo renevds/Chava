@@ -25,7 +25,8 @@ public class ChavaServer {
 
         ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
         server = HttpServer.create(new InetSocketAddress(ip, port), 0);
-        server.createContext("/", new  ChavaHttpHandler(msgCtrl));
+        server.createContext("/", new  ChavaHttpMessageHandler(msgCtrl));
+        server.createContext("/profile", new ChavaHttpProfileHandler(msgCtrl));
         server.setExecutor(threadPoolExecutor);
         server.start();
         System.out.println("Server started on " + ip + "@" + port);

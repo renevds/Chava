@@ -43,19 +43,21 @@ public class MessageController {
         Iterator<Person> iterator = persons.iterator();
         while(person == null && iterator.hasNext()) {
             Person nextPerson = iterator.next();
-            if(nextPerson.getIp() == ip) {
+            if(nextPerson.getIp().equals(ip)) {
                 person = nextPerson;
             }
         }
         if(person == null) {
+            System.out.println("new");
             person = new Person(ip);
+            persons.add(person);
         }
         return person;
     }
 
     public Message getLastMessage(String ip) {
         Message lastMessage = null;
-        for(int i=messages.size(); i >= 0 && lastMessage == null; i--) {
+        for(int i=messages.size() - 1; i >= 0 && lastMessage == null; i--) {
             if(messages.get(i).getSender().getIp().equals(ip)) {
                 lastMessage = messages.get(i);
             }
