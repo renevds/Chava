@@ -27,9 +27,9 @@ public class MessageController {
 
     public String displayMessages() {
         StringBuilder htmlBuilder = new StringBuilder();
-        htmlBuilder.append("<ul style='max-height: 800px; overflow:scroll; -webkit-overflow-scrolling: touch;' class=\"list-group\">");
-        for(Message message: messages) {
-            htmlBuilder.append("<li><span class=\"list-group-item\" style=\" color:" + message.getSender().getColor() + "\">").append(message.getSender().getNickname()).append(": ").append(message.getContent()).append("<l/i>");
+        htmlBuilder.append("<ul style='max-height: 500px; overflow:scroll; -webkit-overflow-scrolling: touch;' class=\"list-group\">");
+        for(int i = messages.size() - 1; i > 0 ; i--) {
+            htmlBuilder.append("<li><span class=\"list-group-item\" style=\" color:" + messages.get(i).getSender().getColor() + "\">").append(messages.get(i).getSender().getNickname()).append(": ").append(messages.get(i).getContent()).append("<l/i>");
         }
         htmlBuilder.append("</ul>");
         return htmlBuilder.toString();
