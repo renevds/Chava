@@ -10,4 +10,12 @@ public class Message {
         this.sender = sender;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public Person getSender() {
+        return sender;
+    }
+
 }
