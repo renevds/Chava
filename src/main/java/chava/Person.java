@@ -9,15 +9,15 @@ public class Person {
         this.ip = ip;
     }
 
-    private String getNickname() {
+    public String getNickname() {
         return nickname;
     }
 
-    private void setNickname(String nickname) {
+    public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
-    private String getIp() {
+    public String getIp() {
         return ip;
     }
 }
