@@ -5,6 +5,10 @@ import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 public class ChavaHttpProfileHandler implements HttpHandler {
     private MessageController msgCtrl;
@@ -15,7 +19,7 @@ public class ChavaHttpProfileHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        System.out.println(httpExchange.getRemoteAddress() + " connected. (" + httpExchange.getRequestMethod() + ")");
+        System.out.println(httpExchange.getRemoteAddress().toString().split(":")[0] + " connected. (" + httpExchange.getRequestMethod() + ")");
         if ("POST".equals(httpExchange.getRequestMethod())) {
             handlePostRequest(httpExchange);
         }
@@ -23,18 +27,20 @@ public class ChavaHttpProfileHandler implements HttpHandler {
     }
 
     private void handlePostRequest(HttpExchange httpExchange) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        InputStream ios = httpExchange.getRequestBody();
-        int i;
-        while ((i = ios.read()) != -1) {
-            sb.append((char) i);
-        }
 
+        String codedText = IOUtils.toString(httpExchange.getRequestBody(), StandardCharsets.UTF_8.name());
+        String text = java.net.URLDecoder.decode(codedText, StandardCharsets.UTF_8.name());
 
-        String messageString = sb.substring(5);
+        System.out.println("profile: " + text);
 
-        System.out.println("profile: " + messageString);
-        msgCtrl.getSender(httpExchange.getRemoteAddress().toString()).setNickname(messageString);
+        String messageString = StringEscapeUtils.escapeHtml4(text.toString().split("&")[0].split("=")[1]);
+        String messageColor = StringEscapeUtils.escapeHtml4(text.toString().split("&")[1].split("=")[1]);
+
+        System.out.println("profile name: " + messageString);
+        System.out.println("profile color: " + messageColor);
+        Person per = msgCtrl.getSender(httpExchange.getRemoteAddress().toString().split(":")[0]);
+        per.setNickname(messageString);
+        per.setColor(messageColor);
         MainPageResponse.handleResponse(httpExchange, msgCtrl.displayMessages());
 
     }

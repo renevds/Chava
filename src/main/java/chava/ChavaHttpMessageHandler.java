@@ -6,8 +6,11 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.text.StringEscapeUtils;
+
+
 
 public class ChavaHttpMessageHandler implements HttpHandler {
 
@@ -19,7 +22,7 @@ public class ChavaHttpMessageHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        System.out.println(httpExchange.getRemoteAddress() + " connected. (" + httpExchange.getRequestMethod() + ")");
+        System.out.println(httpExchange.getRemoteAddress().toString().split(":")[0] + " connected. (" + httpExchange.getRequestMethod() + ")");
         if ("GET".equals(httpExchange.getRequestMethod())) {
             MainPageResponse.handleResponse(httpExchange, msgCtrl.displayMessages());
         } else if ("POST".equals(httpExchange.getRequestMethod())) {
@@ -29,19 +32,22 @@ public class ChavaHttpMessageHandler implements HttpHandler {
     }
 
     private void handlePostRequest(HttpExchange httpExchange) throws IOException {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder text = new StringBuilder();
         InputStream ios = httpExchange.getRequestBody();
         int i;
         while ((i = ios.read()) != -1) {
-            sb.append((char) i);
+            text.append((char) i);
         }
 
 
-        String messageString = sb.toString().substring(8);
+        String sb = text.toString().substring(8);
 
-        Message newMes = new Message(messageString, msgCtrl.getSender(httpExchange.getRemoteAddress().toString()));
 
-        Message check = msgCtrl.getLastMessage(httpExchange.getRemoteAddress().toString());
+        String messageString = StringEscapeUtils.escapeHtml4(java.net.URLDecoder.decode(sb, StandardCharsets.UTF_8.name()));
+
+        Message newMes = new Message(messageString, msgCtrl.getSender(httpExchange.getRemoteAddress().toString().split(":")[0]));
+
+        Message check = msgCtrl.getLastMessage(httpExchange.getRemoteAddress().toString().split(":")[0]);
 
         if((check == null || !check.getContent().equals(messageString)) && messageString != ""){
             msgCtrl.addMessage(newMes);
