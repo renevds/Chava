@@ -52,4 +52,18 @@ public class MessageController {
         }
         return person;
     }
+
+    public Message getLastMessage(String ip) {
+        Message lastMessage = null;
+        for(int i=messages.size(); i >= 0 && lastMessage == null; i--) {
+            if(messages.get(i).getSender().getIp() == ip) {
+                lastMessage = messages.get(i);
+            }
+        }
+        return lastMessage;
+    }
+
+    public Message getLastMessage(Person person) {
+        return getLastMessage(person.getIp());
+    }
 }
