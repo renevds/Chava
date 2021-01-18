@@ -10,7 +10,7 @@ public class ChavaServer {
 
     private String ip;
     private int port;
-    HttpServer server;
+    private HttpServer server;
 
     public ChavaServer(String ip, int port){
         this.ip = ip;
@@ -20,7 +20,7 @@ public class ChavaServer {
     public void startServer() throws IOException {
         ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
         server = HttpServer.create(new InetSocketAddress(ip, port), 0);
-        server.createContext("/test", new  ChavaHttpHandler());
+        server.createContext("/", new  ChavaHttpHandler());
         server.setExecutor(threadPoolExecutor);
         server.start();
         System.out.println("Server started on " + ip + "@" + port);
