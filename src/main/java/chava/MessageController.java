@@ -56,7 +56,7 @@ public class MessageController {
     public Message getLastMessage(String ip) {
         Message lastMessage = null;
         for(int i=messages.size(); i >= 0 && lastMessage == null; i--) {
-            if(messages.get(i).getSender().getIp() == ip) {
+            if(messages.get(i).getSender().getIp().equals(ip)) {
                 lastMessage = messages.get(i);
             }
         }

@@ -36,11 +36,17 @@ public class ChavaHttpHandler implements HttpHandler {
             sb.append((char) i);
         }
 
+
         String messageString = sb.toString().substring(8);
 
+        Message newMes = new Message(messageString, msgCtrl.getSender(httpExchange.getRemoteAddress().toString()));
 
 
-        System.out.println("hm: " + messageString);
+        if(msgCtrl.getLastMessage(httpExchange.getRemoteAddress().toString()) != null || msgCtrl.getLastMessage(httpExchange.getRemoteAddress().toString()).getContent().equals(messageString)){
+            msgCtrl.addMessage(newMes);
+            System.out.println("hm: " + messageString);
+        }
+
         handleResponse(httpExchange, msgCtrl.displayMessages());
     }
 
@@ -52,8 +58,9 @@ public class ChavaHttpHandler implements HttpHandler {
         htmlBuilder.append("<form action=\"\" method=\"post\">\n" +
                 "  <label for=\"message\">Message:</label><br>\n" +
                 "  <input type=\"text\" id=\"message\" name=\"message\"><br>\n" +
-                "<input type=\"submit\" value=\"Submit\">" +
-                "</form>");
+                "<input type=\"submit\" value=\"Send\">" +
+                "</form>" +
+                "<button onClick=\"window.location.reload();\">Refresh</button>");
         httpExchange.sendResponseHeaders(200, htmlBuilder.toString().length());
         outputStream.write(htmlBuilder.toString().getBytes());
         outputStream.flush();
