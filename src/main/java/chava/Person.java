@@ -3,7 +3,8 @@ package chava;
 public class Person {
 
     private String ip;
-    private String nickname = "";
+    private String nickname;
+    private String color = "#000000";
 
     public Person(String ip) {
         this.ip = ip;
@@ -20,6 +21,14 @@ public class Person {
 
     public String getIp() {
         return ip;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getColor() {
+        return color;
     }
 
 }
