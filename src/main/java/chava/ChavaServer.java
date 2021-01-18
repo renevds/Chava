@@ -19,7 +19,7 @@ public class ChavaServer {
 
     public void startServer() throws IOException {
         ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
-        server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
+        server = HttpServer.create(new InetSocketAddress(ip, port), 0);
         server.createContext("/test", new  ChavaHttpHandler());
         server.setExecutor(threadPoolExecutor);
         server.start();
