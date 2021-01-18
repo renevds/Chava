@@ -3,16 +3,21 @@ package chava;
 import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class MessageController {
 
     private List<Message> messages = new ArrayList<>();
+    private List<Person> persons = new ArrayList<>();
 
     public MessageController() {
     }
 
     public void addMessage(Message message) {
+        if(! persons.contains(message.getSender())) {
+            persons.add(message.getSender());
+        }
         messages.add(message);
     }
 
@@ -27,5 +32,21 @@ public class MessageController {
             htmlBuilder.append("<h2>").append(message.getSender().getNickname()).append("</h2>").append("<p>").append(message.getContent()).append("</p>");
         }
         return htmlBuilder.toString();
+    }
+
+    public List<Person> getSenders() {
+        return persons;
+    }
+
+    public Person getSender(String ip) {
+        Person person = null;
+        Iterator<Person> iterator = persons.iterator();
+        while(person == null && iterator.hasNext()) {
+            Person nextPerson = iterator.next();
+            if(nextPerson.getIp() == ip) {
+                person = nextPerson;
+            }
+        }
+        return person;
     }
 }
