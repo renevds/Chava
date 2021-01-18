@@ -27,10 +27,11 @@ public class MessageController {
 
     public String displayMessages() {
         StringBuilder htmlBuilder = new StringBuilder();
-
+        htmlBuilder.append("<ul style='font-size: 1.5em'>");
         for(Message message: messages) {
-            htmlBuilder.append("<h2>").append(message.getSender().getNickname()).append("</h2>").append("<p>").append(message.getContent()).append("</p>");
+            htmlBuilder.append("<li>").append(message.getSender().getNickname()).append(": ").append(message.getContent()).append("<l/i>");
         }
+        htmlBuilder.append("</ul>");
         return htmlBuilder.toString();
     }
 
