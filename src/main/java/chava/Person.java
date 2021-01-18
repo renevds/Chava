@@ -7,6 +7,7 @@ public class Person {
 
     public Person(String ip) {
         this.ip = ip;
+        this.nickname = ip;
     }
 
     public String getNickname() {

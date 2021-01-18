@@ -47,6 +47,9 @@ public class MessageController {
                 person = nextPerson;
             }
         }
+        if(person == null) {
+            person = new Person(ip);
+        }
         return person;
     }
 }
