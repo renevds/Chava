@@ -22,12 +22,10 @@ public class MessageController {
 
     public String displayMessages() {
         StringBuilder htmlBuilder = new StringBuilder();
-        htmlBuilder.append("<html>").append("<body>");
 
         for(Message message: messages) {
             htmlBuilder.append("<h2>").append(message.getSender().getNickname()).append("</h2>").append("<p>").append(message.getContent()).append("</p>");
         }
-        htmlBuilder.append("</body>").append("</html>");
         return htmlBuilder.toString();
     }
 }
